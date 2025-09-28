@@ -334,6 +334,8 @@ networks:
     ipam:
       config:
         - subnet: ${TEST_NETWORK}
+    driver_opts:
+      com.docker.network.bridge.name: "do5g_br"
 volumes:
   grafana_data:
     name: grafana_data

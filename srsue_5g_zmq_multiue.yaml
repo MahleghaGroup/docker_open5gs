@@ -1,0 +1,79 @@
+services:
+  srsue_5g_zmq1:
+    image: docker_srslte
+    container_name: srsue_5g_zmq1
+    stdin_open: true
+    tty: true
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    volumes:
+      - ./srslte:/mnt/srslte
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=ue_5g_zmq1
+    network_mode: host
+#    expose:
+#      - "2100/tcp"
+#      - "2101/tcp"
+#    networks:
+#      default:
+#        ipv4_address: ${SRS_UE1_IP}
+  srsue_5g_zmq2:
+    image: docker_srslte
+    container_name: srsue_5g_zmq2
+    stdin_open: true
+    tty: true
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    volumes:
+      - ./srslte:/mnt/srslte
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=ue_5g_zmq2
+    network_mode: host
+#    expose:
+#      - "2200/tcp"
+#      - "2201/tcp"
+#    networks:
+#      default:
+#        ipv4_address: ${SRS_UE2_IP}
+  srsue_5g_zmq3:
+    image: docker_srslte
+    container_name: srsue_5g_zmq3
+    stdin_open: true
+    tty: true
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    volumes:
+      - ./srslte:/mnt/srslte
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=ue_5g_zmq3
+#    expose:
+#      - "2300/tcp"
+#      - "2301/tcp"
+#    ports:
+#      - "2300:2300/tcp"
+#      - "2301:2301/tcp"
+    network_mode: host
+#    networks:
+#      default:
+#        ipv4_address: ${SRS_UE3_IP}
+
+#networks:
+#  default:
+#
+#    external:
+#      name: docker_open5gs_default

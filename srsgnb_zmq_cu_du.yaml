@@ -1,0 +1,88 @@
+services:
+  srsgnb_zmq_cu:
+#    image: docker_srsran
+    image: srsran_rah_zmq
+    container_name: srsgnb_zmq_cu
+    stdin_open: true
+    tty: true
+    privileged: true
+    volumes:
+      - ./srsran_cu:/mnt/srsran
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=cu_zmq2
+    expose:
+      - "38412/sctp"
+      - "2152/udp"
+      - "2000/tcp"
+      - "2001/tcp"
+      - "38472/sctp"
+#    ports:
+#      - "38472:38472/sctp"
+    networks:
+      f1_net:
+        ipv4_address: ${SRS_GNB_CU_F1_IP}
+      default:
+        ipv4_address: ${SRS_GNB_CU_CORE_IP}
+      e2_net:
+        ipv4_address: ${SRS_GNB_CU_E2_IP}
+  srsgnb_zmq_du:
+#    image: docker_srsran
+    image: srsran_rah_zmq
+    container_name: srsgnb_zmq_du
+    stdin_open: true
+    tty: true
+    privileged: true
+    volumes:
+      - ./srsran_du:/mnt/srsran
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    environment:
+#      - COMPONENT_NAME=du_zmq
+      - COMPONENT_NAME=du_zmq2
+    expose:
+      - "38412/sctp"
+      - "2152/udp"
+      - "2000/tcp"
+      - "2001/tcp"
+      - "38472/sctp"
+#    ports:
+#      - "38472:38472/sctp"
+    depends_on:
+      - srsgnb_zmq_cu
+    networks:
+      f1_net:
+        ipv4_address: ${SRS_GNB_DU_F1_IP}
+      default:
+        ipv4_address: ${SRS_GNB_DU_UE_IP}
+      e2_net:
+        ipv4_address: ${SRS_GNB_DU_E2_IP}
+#  sniffer:
+#    image: nicolaka/netshoot
+#    command: tcpdump -i any -w /pcap/capture.pcap
+#    cap_add:
+#      - NET_ADMIN
+#    volumes:
+#      - ./pcap:/pcap
+#    networks:
+#      - default
+#      - f1_net
+networks:
+  default:
+    external:
+      name: docker_open5gs_default
+  f1_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${F1_NETWORK}
+    driver_opts:
+      com.docker.network.bridge.name: "do5g_f1_br"
+  e2_net:
+    external: true
+    name: e2-net
