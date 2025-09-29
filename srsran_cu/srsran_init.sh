@@ -57,9 +57,9 @@ sed -i 's|SRS_GNB_CU_E2_IP|'$SRS_GNB_CU_E2_IP'|g' /etc/srsran/cu.yml
 # For dbus not started issue when host machine is running Ubuntu 22.04
 service dbus start && service avahi-daemon start
 
-sleep infinity
+#sleep infinity
 
-#exec srscu -c /etc/srsran/cu.yml $@
+exec srscu -c /etc/srsran/cu.yml $@
 
 # exec srscu -c /etc/srsran/cu.yml -c /etc/srsran/qos.yml $@
 
